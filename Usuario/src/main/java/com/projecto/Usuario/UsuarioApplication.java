@@ -1,13 +1,13 @@
-package com.duocuc.Cliente;
+package com.projecto.Usuario;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ClienteApplication {
+public class UsuarioApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ClienteApplication.class, args);
+		SpringApplication.run(UsuarioApplication.class, args);
 	}
 
 }

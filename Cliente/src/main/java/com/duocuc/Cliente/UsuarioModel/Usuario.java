@@ -1,4 +1,4 @@
-package com.duocuc.Cliente.ClienteModel;
+package com.duocuc.Cliente.UsuarioModel;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -9,29 +9,32 @@ import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Data
 @Entity
 @Table(name = "clientes")
 @AllArgsConstructor 
 @NoArgsConstructor
-public class Cliente {
+@Getter
+@Setter
+public class Usuario {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     
-    @NotBlank(message = "El nombre es obligatorio")
+    @Column(length = 20, nullable = false)
     private String nombre;
 
-    @NotBlank(message = "El apellido es obligatorio")
+    @Column(length = 50, nullable = false)
     private String apellido;
 
-    @NotBlank(message = "El email es obligatorio")
     @Column(unique = true)
     private String email;
 
-    @NotBlank(message = "El teléfono es obligatorio")
+    @Column(length = 15, nullable = false)
     private String telefono;
 }
