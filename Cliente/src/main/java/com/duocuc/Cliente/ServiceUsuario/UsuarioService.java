@@ -1,4 +1,4 @@
-package com.duocuc.Cliente.ServiceCliente;
+package com.duocuc.Cliente.ServiceUsuario;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,29 +11,30 @@ import com.duocuc.Cliente.ClienteModel.Cliente;
 import com.duocuc.Cliente.DTOCliente.ClienteRequest;
 import com.duocuc.Cliente.DTOCliente.ClienteResponse;
 import com.duocuc.Cliente.RepositoryCliente.ClientRepository;
+import com.duocuc.Cliente.UsuarioModel.Usuario;
 
 @Service
 @Transactional
-public class ClienteService {
+public class UsuarioService {
 
     //Inyectar el repositorio de clientes
     @Autowired
-    private ClientRepository clienteRepository;
+    private UsuarioRepository clienteRepository;
 
     //Metodo para crear un nuevo cliente usando DTO
-    public ClienteResponse crearCliente(ClienteRequest request){ {
+    public UsuarioResponse crearUsuario(UsuarioRequest request){ {
         if (clienteRepository.existsByEmail(request.getEmail())){
             throw new IllegalArgumentException("El correo ya existe en la base de datos");
         }
         
-        Cliente cliente = new Cliente();
+        Usuario cliente = new Usuario();
         cliente.setNombre(request.getNombre());
         cliente.setApellido(request.getApellido());
         cliente.setEmail(request.getEmail());
         
-        Cliente guardado = clienteRepository.save(cliente);
+        Usuario guardado = clienteRepository.save(cliente);
 
-        return new ClienteResponse(
+        return new UsuarioResponse(
             guardado.getId(),
             guardado.getNombre(),
             guardado.getApellido(),
@@ -42,15 +43,15 @@ public class ClienteService {
     }
 
     //Metodo para obtener todos los clientes como DTO response
-    public List<ClienteResponse> obtenerClientes(){
-        List<ClienteResponse> respuestas = new ArrayList<>();
-        List<Cliente> clientes = clienteRepository.findAll();
-        for (Cliente c : clientes) {
-            ClienteResponse response = new ClienteResponse(
-                c.getId(),
-                c.getNombre(),
-                c.getApellido(),
-                c.getEmail()
+    public List<UsuarioResponse> obtenerUsuarios(){
+        List<UsuarioResponse> respuestas = new ArrayList<>();
+        List<Usuario> usuarios = clienteRepository.findAll();
+        for (Usuario u : usuarios) {
+            UsuarioResponse response = new UsuarioResponse(
+                u.getId(),
+                u.getNombre(),
+                u.getApellido(),
+                u.getEmail()
             );
             respuestas.add(response);
         }
@@ -58,26 +59,26 @@ public class ClienteService {
     }
 
     //Metodo para obtener un cliente por su ID
-    public Optional<Cliente> obtenerClientePorId(Long id){
-        Cliente cliente =clienteRepository.findById(id);
-                .orElsehrow (() -> new IllegalArgumentException("Cliente no encontrado con ID: " + id));
-        return ClienteResponse(cliente.getId(), cliente.getNombre(), cliente.getApellido(), cliente.getEmail());
+    public Optional<Usuario> obtenerUsuarioPorId(Long id){
+        Usuario usuario =UsuarioRepository.findById(id);
+                .orElsehrow (() -> new IllegalArgumentException("Usuario no encontrado con ID: " + id));
+        return UsuarioResponse(usuario.getId(), usuario.getNombre(), usuario.getApellido(), usuario.getEmail());
     }
 
     //Metodo para actualizar 
-    public Cliente actualizarCliente(Long Id , Cliente clienteActualizado){
-        Cliente cliente = clienteRepository.findById(Id)
-        .orElseThrow(() -> new IllegalArgumentException("Cliente no encontrado con ID: " + Id));
+    public Usuario actualizarUsuario(Long Id , Usuario usuarioActualizado){
+        Usuario usuario = clienteRepository.findById(Id)
+        .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con ID: " + Id));
 
         return clienteRepository.save(cliente);
     }
 
     //Metodo para eliminar un cliente por su ID
-    public void eliminarCliente(Long id){
+    public void eliminarUsuario(Long id){
         clienteRepository.deleteById(id);
     }
 
-    public Optional<Cliente> buscarPorId(Long id) {
-        return clienteRepository.findById(id);
+    public Optional<Usuario> buscarPorId(Long id) {
+        return usuarioRepository.findById(id);
     }
 }
