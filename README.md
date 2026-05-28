@@ -2,6 +2,11 @@
 
 Sistema de ecommerce basado en arquitectura de microservicios con Spring Boot y Java 21.
 
+## Integrantes
+- Vicente Rodriguez
+- Alessandro Nava
+- Bruno Decinti
+
 ---
 
 ## Requisitos previos
@@ -71,8 +76,8 @@ POST http://localhost:8083/api/v1/auth/login
 Content-Type: application/json
 
 {
-  "username": "vicente",
-  "password": "123456"
+  "username": "admin",
+  "password": "1234"
 }
 ```
 
