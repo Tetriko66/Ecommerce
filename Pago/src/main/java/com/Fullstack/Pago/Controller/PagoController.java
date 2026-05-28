@@ -2,6 +2,7 @@ package com.Fullstack.Pago.Controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,7 +20,7 @@ public class PagoController {
     }
 
     @PostMapping
-    public ResponseEntity<Response> registrar(@RequestBody Request request) {
+    public ResponseEntity<Response> registrar(@Valid @RequestBody Request request) {
         return ResponseEntity.ok(pagoService.registrarPago(request));
     }
 
