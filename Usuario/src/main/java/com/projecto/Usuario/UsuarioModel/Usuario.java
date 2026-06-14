@@ -38,13 +38,6 @@ public class Usuario {
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     private String password;
 
-    public void setEmail(String email) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setEmail'");
-    }
-
-    public String getEmail() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getEmail'");
-    }
+    @Column(unique = true)
+    private String email;
 }
