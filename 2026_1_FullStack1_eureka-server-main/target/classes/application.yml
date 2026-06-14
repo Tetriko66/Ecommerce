@@ -1,0 +1,23 @@
+server:
+  port: 8761
+
+spring:
+  application:
+    name: eureka-server
+
+eureka:
+  client:
+    # El servidor Eureka no se registra a sí mismo.
+    register-with-eureka: false
+    # El servidor Eureka no necesita traer otro registro en este ejemplo local.
+    fetch-registry: false
+  server:
+    # Útil para clases/demos locales: muestra cambios más rápido.
+    # En producción conviene revisar esta configuración.
+    enable-self-preservation: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
