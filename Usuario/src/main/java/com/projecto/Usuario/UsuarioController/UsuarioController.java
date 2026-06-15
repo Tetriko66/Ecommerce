@@ -17,9 +17,11 @@ import com.projecto.Usuario.UsuarioDTO.Request.Request;
 import com.projecto.Usuario.UsuarioDTO.Response.Response;
 import com.projecto.Usuario.UsuarioService.UsuarioService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.Access;
 import jakarta.validation.Valid;
 
 
@@ -36,9 +38,14 @@ public class UsuarioController {
 
     // Crear usuario usando UsuarioRequest DTO
     @Operation(description = "Crea un nuevo usuario")
-    @ApiResponse(responseCode = "200", description = "Usuario creado exitosamente")
-    @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos")
-    @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    @ApiResponse(responseCode = "200", description = "Usuario creado exitosamente",
+        content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)))
+    @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos"
+        ,  content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)
+        , examples = @ExampleObject (value = "{\"status\": 404, \"mensaje\": \"Usuario no encontrado\"}")))
+    @ApiResponse(responseCode = "500", description = "Error interno del servidor"
+        , content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)
+        , examples = @ExampleObject (value = "{\"status\": 500, \"mensaje\": \"Error interno del servidor\"}")))
     @PostMapping
     public ResponseEntity<Response> crearUsuario(@Valid @RequestBody Request request) {
         return ResponseEntity.ok(usuarioService.crearUsuario(request));
@@ -46,8 +53,14 @@ public class UsuarioController {
 
     // Listar todos los usuarios devolviendo UsuarioResponse DTO
     @Operation(description = "Obtiene la lista de todos los usuarios")
-    @ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida exitosamente")
-    @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    @ApiResponse(responseCode = "200", description = "Lista de usuarios obtenida exitosamente"
+        , content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)
+        , examples = @ExampleObject (value = "[{\"id\": 1, \"username\": \"usuario1\", \"email\": \"usuario1@example.com\"}]")))
+     @ApiResponse(responseCode = "400", description = "Datos de entrada inválidos"
+        ,  content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)
+        , examples = @ExampleObject (value = "{\"status\": 400, \"mensaje\": \"Datos de entrada inválidos\"}")))
+    @ApiResponse(responseCode = "500", description = "Error interno del servidor"
+        , content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)))
     @GetMapping
     public ResponseEntity<List<Response>> obtenerUsuarios() {
         return ResponseEntity.ok(usuarioService.obtenerUsuarios());
@@ -55,9 +68,15 @@ public class UsuarioController {
 
     // Obtener usuario por ID
     @Operation(description = "Obtiene un usuario por su ID")
-    @ApiResponse(responseCode = "200", description = "Usuario encontrado ")
-    @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
-    @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    @ApiResponse(responseCode = "200", description = "Usuario encontrado "
+        , content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)
+        , examples = @ExampleObject (value = "{\"id\": 1, \"username\": \"usuario1\", \"email\": \"usuario1@example.com\"}")))
+    @ApiResponse(responseCode = "404", description = "Usuario no encontrado"
+        , content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)
+        , examples = @ExampleObject (value = "{\"status\": 404, \"mensaje\": \"Usuario no encontrado\"}")))
+    @ApiResponse(responseCode = "500", description = "Error interno del servidor"
+        , content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)
+        , examples = @ExampleObject (value = "{\"status\": 500, \"mensaje\": \"Error interno del servidor\"}")))
     @GetMapping("/{id}")
     public ResponseEntity<Response> obtenerUsuarioPorId(@PathVariable Long id) {
         return ResponseEntity.ok(usuarioService.obtenerUsuarioPorId(id));
@@ -65,9 +84,15 @@ public class UsuarioController {
 
     // Actualizar usuario con UsuarioRequest DTO
     @Operation(description = "Actualiza un usuario existente por su ID")
-    @ApiResponse(responseCode = "200", description = "Usuario Actualizado")
-    @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
-    @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    @ApiResponse(responseCode = "200", description = "Usuario Actualizado"
+        , content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)
+        , examples = @ExampleObject (value = "{\"id\": 1, \"username\": \"usuario1\", \"email\": \"usuario1@example.com\"}")))
+    @ApiResponse(responseCode = "404", description = "Usuario no encontrado"
+        , content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)
+        , examples = @ExampleObject (value = "{\"status\": 404, \"mensaje\": \"Usuario no encontrado\"}")))
+    @ApiResponse(responseCode = "500", description = "Error interno del servidor"
+        , content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)
+        , examples = @ExampleObject (value = "{\"status\": 500, \"mensaje\": \"Error interno del servidor\"}")))
     @PutMapping("/{id}")
     public ResponseEntity<Response> actualizarUsuario(@PathVariable Long id,
                                                              @Valid @RequestBody Request request) {
@@ -76,9 +101,15 @@ public class UsuarioController {
 
     // Eliminar usuario
     @Operation(description = "Elimina un usuario por su ID")
-    @ApiResponse(responseCode = "200", description = "Usuario eliminado")
-    @ApiResponse(responseCode = "404", description = "Usuario no encontrado")
-    @ApiResponse(responseCode = "500", description = "Error interno del servidor")
+    @ApiResponse(responseCode = "200", description = "Usuario eliminado"
+        , content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)
+        , examples = @ExampleObject (value = "{\"mensaje\": \"Usuario eliminado exitosamente\"}")))
+    @ApiResponse(responseCode = "404", description = "Usuario no encontrado"
+        , content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)
+        , examples = @ExampleObject (value = "{\"status\": 404, \"mensaje\": \"Usuario no encontrado\"}")))
+    @ApiResponse(responseCode = "500", description = "Error interno del servidor"
+        , content = @Content(mediaType = "application/json", schema = @Schema(implementation = Response.class)
+        , examples = @ExampleObject (value = "{\"status\": 500, \"mensaje\": \"Error interno del servidor\"}")))
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarUsuario(@PathVariable Long id) {
         usuarioService.eliminarUsuario(id);
