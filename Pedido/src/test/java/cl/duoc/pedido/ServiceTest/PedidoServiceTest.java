@@ -46,28 +46,36 @@ public class PedidoServiceTest {
 
     @Test
     void obtenerTodosDevuelveLista() {
+        // Given: el repositorio devuelve un pedido
         when(pedidoRepository.findAll()).thenReturn(List.of(pedido));
 
+        // When: se obtienen todos los pedidos
         List<DtoPedidoResponse> resultado = pedidoService.obtenerTodos();
 
+        // Then: la lista tiene un pedido con estado PAGADO
         assertThat(resultado).hasSize(1);
         assertThat(resultado.get(0).getEstado()).isEqualTo("PAGADO");
     }
 
     @Test
     void obtenerPorIdDevuelvePedido() {
+        // Given: existe un pedido con id 1
         when(pedidoRepository.findById(1L)).thenReturn(Optional.of(pedido));
 
+        // When: se busca por id
         DtoPedidoResponse resultado = pedidoService.obtenerPorId(1L);
 
+        // Then: devuelve id y monto correctos
         assertThat(resultado.getIdPedido()).isEqualTo(1L);
         assertThat(resultado.getMontoTotal()).isEqualTo(5000.0);
     }
 
     @Test
     void obtenerPorIdNoEncontradoLanzaExcepcion() {
+        // Given: no existe pedido con id 99
         when(pedidoRepository.findById(99L)).thenReturn(Optional.empty());
 
+        // When / Then: debe lanzar excepción de no encontrado
         assertThatThrownBy(() -> pedidoService.obtenerPorId(99L))
                 .isInstanceOf(ResponseStatusException.class)
                 .hasMessageContaining("Pedido no encontrado con id: 99");
@@ -75,17 +83,22 @@ public class PedidoServiceTest {
 
     @Test
     void eliminarExitoso() {
+        // Given: existe un pedido con id 1
         when(pedidoRepository.existsById(1L)).thenReturn(true);
 
+        // When: se elimina el pedido
         pedidoService.eliminar(1L);
 
+        // Then: el repositorio borra por id
         verify(pedidoRepository).deleteById(1L);
     }
 
     @Test
     void eliminarPedidoNoEncontradoLanzaExcepcion() {
+        // Given: no existe pedido con id 99
         when(pedidoRepository.existsById(99L)).thenReturn(false);
 
+        // When / Then: debe lanzar excepción de no encontrado
         assertThatThrownBy(() -> pedidoService.eliminar(99L))
                 .isInstanceOf(ResponseStatusException.class)
                 .hasMessageContaining("Pedido no encontrado con id: 99");

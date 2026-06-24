@@ -47,10 +47,13 @@ public class ServiceTest {
 
     @Test
     void listarDevuelveLista() {
+        // Given: el repositorio devuelve un item del carrito
         when(repository.findAll()).thenReturn(List.of(modelo));
 
+        // When: se listan los items
         List<Response> resultado = service.listar();
 
+        // Then: la lista tiene un elemento con producto y cantidad correctos
         assertThat(resultado).hasSize(1);
         assertThat(resultado.get(0).getProductoId()).isEqualTo(10L);
         assertThat(resultado.get(0).getCantidad()).isEqualTo(2);
@@ -58,26 +61,34 @@ public class ServiceTest {
 
     @Test
     void listarDevuelveListaVacia() {
+        // Given: el repositorio no tiene items
         when(repository.findAll()).thenReturn(List.of());
 
+        // When: se listan los items
         List<Response> resultado = service.listar();
 
+        // Then: la lista está vacía
         assertThat(resultado).isEmpty();
     }
 
     @Test
     void eliminarExitosoEliminaDelRepositorio() {
+        // Given: existe un item del carrito con id 1
         when(repository.findById(1L)).thenReturn(Optional.of(modelo));
 
+        // When: se elimina el item
         service.eliminar(1L);
 
+        // Then: el repositorio borra el modelo
         verify(repository).delete(modelo);
     }
 
     @Test
     void eliminarCarritoQueNoExisteLanzaExcepcion() {
+        // Given: no existe item con id 99
         when(repository.findById(99L)).thenReturn(Optional.empty());
 
+        // When / Then: debe lanzar excepción de no encontrado
         assertThatThrownBy(() -> service.eliminar(99L))
                 .isInstanceOf(EntityNotFoundException.class)
                 .hasMessage("Carrito no encontrado con id 99");
@@ -85,19 +96,21 @@ public class ServiceTest {
 
     @Test
     void listarConMultiplesElementosDevuelveTodos() {
-    ModelCarro modelo2 = new ModelCarro();
-    modelo2.setId(2L);
-    modelo2.setUsuarioId(2L);
-    modelo2.setProductoId(20L);
-    modelo2.setCantidad(5);
-    modelo2.setFechaCreacion(LocalDateTime.now());
+        // Given: el repositorio devuelve dos items del carrito
+        ModelCarro modelo2 = new ModelCarro();
+        modelo2.setId(2L);
+        modelo2.setUsuarioId(2L);
+        modelo2.setProductoId(20L);
+        modelo2.setCantidad(5);
+        modelo2.setFechaCreacion(LocalDateTime.now());
+        when(repository.findAll()).thenReturn(List.of(modelo, modelo2));
 
-    when(repository.findAll()).thenReturn(List.of(modelo, modelo2));
+        // When: se listan los items
+        List<Response> resultado = service.listar();
 
-    List<Response> resultado = service.listar();
-
-    assertThat(resultado).hasSize(2);
-    assertThat(resultado.get(0).getProductoId()).isEqualTo(10L);
-    assertThat(resultado.get(1).getProductoId()).isEqualTo(20L);
-}
+        // Then: la lista contiene ambos productos
+        assertThat(resultado).hasSize(2);
+        assertThat(resultado.get(0).getProductoId()).isEqualTo(10L);
+        assertThat(resultado.get(1).getProductoId()).isEqualTo(20L);
+    }
 }
