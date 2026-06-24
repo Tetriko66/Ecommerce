@@ -12,7 +12,6 @@ import lombok.Setter;
 @Configuration
 // Indica que leerá propiedades que comiencen con jwt
 @ConfigurationProperties(prefix = "jwt")
-
 public class JwtProperties {
 
     // Guarda el valor de jwt.secret
