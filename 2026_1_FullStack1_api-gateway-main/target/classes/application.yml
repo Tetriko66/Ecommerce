@@ -19,10 +19,20 @@ spring:
 
             # Ruta protegida de fiestas:
             # El header Authorization: Bearer <token> se reenvía al microservicio Fiesta.
-            - id: fiesta-service
-              uri: lb://FIESTA-SERVICE
+            - id: usuario-service
+              uri: lb://USUARIO
               predicates:
-                - Path=/api/v1/fiestas/**
+                - Path=/api/usuarios/**
+
+            - id: carro-service
+              uri: lb://Carro
+              predicates:
+                - Path=/carrito/**
+
+            - id: pedido-service
+              uri: lb://pedido
+              predicates:
+                - Path=/api/v1/pedidos/**
 
 eureka:
   client:

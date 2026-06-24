@@ -95,7 +95,7 @@ public class UsuarioController {
         , examples = @ExampleObject (value = "{\"status\": 500, \"mensaje\": \"Error interno del servidor\"}")))
     @PutMapping("/{id}")
     public ResponseEntity<Response> actualizarUsuario(@PathVariable Long id,
-                                                             @Valid @RequestBody Request request) {
+    @Valid @RequestBody Request request) {
         return ResponseEntity.ok(usuarioService.actualizarUsuario(id, request));
     }
 
