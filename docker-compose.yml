@@ -103,11 +103,14 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ""
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      PRODUCTO_SERVICE_URL: http://producto-service:8082
     depends_on:
       mysql:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
+      producto-service:
+        condition: service_started
     networks:
       - ecommerce-net
 
@@ -143,11 +146,17 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ""
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      PRODUCTO_SERVICE_URL: http://producto-service:8082
+      INVENTARIO_SERVICE_URL: http://inventario-service:8084
     depends_on:
       mysql:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
+      producto-service:
+        condition: service_started
+      inventario-service:
+        condition: service_started
     networks:
       - ecommerce-net
 
@@ -183,11 +192,17 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ""
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      USUARIO_SERVICE_URL: http://usuario-service:8087
+      PRODUCTO_SERVICE_URL: http://producto-service:8082
     depends_on:
       mysql:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
+      producto-service:
+        condition: service_started
+      usuario-service:
+        condition: service_started
     networks:
       - ecommerce-net
 
@@ -223,11 +238,17 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ""
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      INVENTARIO_SERVICE_URL: http://inventario-service:8084
+      PAGO_SERVICE_URL: http://pago-service:8089
     depends_on:
       mysql:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
+      inventario-service:
+        condition: service_started
+      pago-service:
+        condition: service_started
     networks:
       - ecommerce-net
 
@@ -243,11 +264,14 @@ services:
       SPRING_DATASOURCE_USERNAME: root
       SPRING_DATASOURCE_PASSWORD: ""
       EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8761/eureka/
+      PEDIDO_SERVICE_URL: http://pedido-service:8090
     depends_on:
       mysql:
         condition: service_healthy
       eureka-server:
         condition: service_healthy
+      pedido-service:
+        condition: service_started
     networks:
       - ecommerce-net
 

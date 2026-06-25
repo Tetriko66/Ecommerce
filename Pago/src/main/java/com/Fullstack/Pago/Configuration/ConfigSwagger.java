@@ -1,4 +1,4 @@
-package com.projecto.Usuario.Config;
+package com.Fullstack.Pago.Configuration;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
@@ -17,9 +17,9 @@ public class ConfigSwagger {
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("Microservicio Usuario")
+                        .title("Microservicio Pago")
                         .version("1.0")
-                        .description("Documentación de la API de perfil de usuarios del Ecommerce"))
+                        .description("Documentación de la API de pagos del ecommerce"))
                 .addSecurityItem(new SecurityRequirement().addList(BEARER_AUTH))
                 .components(new Components()
                         .addSecuritySchemes(BEARER_AUTH, new SecurityScheme()

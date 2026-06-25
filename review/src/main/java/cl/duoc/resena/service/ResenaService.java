@@ -119,7 +119,7 @@ public class ResenaService {
         try {
             webClientBuilder.build()
                     .get()
-                    .uri(usuarioServiceUrl + "/api/v1/usuarios/" + usuarioId)
+                    .uri(usuarioServiceUrl + "/api/usuarios/" + usuarioId)
                     .retrieve()
                     .bodyToMono(Object.class)
                     .block();
