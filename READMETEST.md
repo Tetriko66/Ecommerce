@@ -190,3 +190,109 @@ Ejemplo (Usuario — email duplicado):
 - **No necesitas MySQL** para estos tests: el repositorio está mockeado.
 - Los tests de **Carro, Pedido, Inventario, Despacho y Reseñas** no prueban llamadas reales a otros microservicios (WebClient); solo la lógica que usa el repositorio local.
 - Antes de la defensa, ejecuta al menos `mvn test -Dtest=NombreDelTest` en cada microservicio y confirma **BUILD SUCCESS**.
+
+---
+
+## Qué hace cada test unitario (por microservicio)
+
+Resumen simple de los 5 tests de cada service. Sirve para estudiar o explicar en la defensa.
+
+### Usuario (`ServiceTest`)
+
+| Test | Qué prueba |
+|------|------------|
+| `crearUsuarioyDevuelveUsuarioCreado` | Si el email y username no existen, crea el usuario y devuelve id y username correctos. |
+| `eliminarUsuarioyDevuelveUsuarioEliminado` | Si el usuario existe, lo elimina del repositorio. |
+| `actualizarUsuarioyDevuelveActualizado` | Si el usuario existe, actualiza sus datos y devuelve el username nuevo. |
+| `CrearUsuarioconUsernameDuplicado` | Si el username ya existe, lanza error y no crea el usuario. |
+| `CrearUsuarioconEmailDuplicado` | Si el email ya existe, lanza error y no crea el usuario. |
+
+### Carro (`ServiceTest`)
+
+| Test | Qué prueba |
+|------|------------|
+| `listarDevuelveLista` | Al listar el carrito, devuelve los items con producto y cantidad correctos. |
+| `listarDevuelveListaVacia` | Si no hay items en el carrito, devuelve una lista vacía. |
+| `eliminarExitosoEliminaDelRepositorio` | Si el item existe, lo elimina del repositorio. |
+| `eliminarCarritoQueNoExisteLanzaExcepcion` | Si el item no existe, lanza error "Carrito no encontrado". |
+| `listarConMultiplesElementosDevuelveTodos` | Si hay varios items, los devuelve todos en la lista. |
+
+### Pedido (`PedidoServiceTest`)
+
+| Test | Qué prueba |
+|------|------------|
+| `obtenerTodosDevuelveLista` | Devuelve todos los pedidos; verifica que el estado sea PAGADO. |
+| `obtenerPorIdDevuelvePedido` | Busca un pedido por id y devuelve id y monto correctos. |
+| `obtenerPorIdNoEncontradoLanzaExcepcion` | Si el pedido no existe, lanza error 404. |
+| `eliminarExitoso` | Si el pedido existe, lo elimina del repositorio. |
+| `eliminarPedidoNoEncontradoLanzaExcepcion` | Si el pedido no existe al eliminar, lanza error 404. |
+
+### Pago (`PagoServiceTest`)
+
+| Test | Qué prueba |
+|------|------------|
+| `registrarPagoDevuelvePagoCreado` | Registra un pago y devuelve monto y usuario correctos. |
+| `listarPagosDevuelveLista` | Lista todos los pagos registrados. |
+| `actualizarMontoDevuelvePagoActualizado` | Si el pago existe, actualiza el monto y lo devuelve. |
+| `actualizarMontoPagoNoEncontradoLanzaExcepcion` | Si el pago no existe, lanza error "Pago no encontrado". |
+| `eliminarPagoEliminaDelRepositorio` | Elimina el pago del repositorio por id. |
+
+### Producto (`ProductoServiceTest`)
+
+| Test | Qué prueba |
+|------|------------|
+| `obtenerTodosDevuelveLista` | Devuelve la lista de productos con el nombre correcto. |
+| `obtenerPorIdDevuelveProducto` | Busca un producto por id y devuelve id y precio. |
+| `obtenerPorIdNoEncontradoLanzaExcepcion` | Si el producto no existe, lanza error 404. |
+| `desactivarMarcaProductoComoInactivo` | Desactiva un producto (baja lógica) y lo guarda como inactivo. |
+| `eliminarProductoNoEncontradoLanzaExcepcion` | Si el producto no existe al eliminar, lanza error 404. |
+
+### Inventario (`InventarioServiceTest`)
+
+| Test | Qué prueba |
+|------|------------|
+| `obtenerTodosDevuelveLista` | Devuelve todos los registros de inventario. |
+| `obtenerPorIdDevuelveInventario` | Busca inventario por id y devuelve la cantidad correcta. |
+| `obtenerPorIdNoEncontradoLanzaExcepcion` | Si no existe inventario con ese id, lanza error 404. |
+| `agregarStockSumaCantidad` | Suma unidades al stock (ej. 20 + 5 = 25). |
+| `reducirStockInsuficienteLanzaExcepcion` | Si se piden más unidades de las disponibles, lanza error de stock insuficiente. |
+
+### Despacho (`DespachoServiceTest`)
+
+| Test | Qué prueba |
+|------|------------|
+| `obtenerTodosDevuelveLista` | Devuelve todos los despachos registrados. |
+| `obtenerPorIdDevuelveDespacho` | Busca un despacho por id y devuelve su estado. |
+| `obtenerPorIdNoEncontradoLanzaExcepcion` | Si el despacho no existe, lanza error 404. |
+| `actualizarEstadoDevuelveDespachoActualizado` | Cambia el estado del despacho (ej. a EN_CAMINO). |
+| `eliminarDespachoNoEncontradoLanzaExcepcion` | Si el despacho no existe al eliminar, lanza error 404. |
+
+### Reseñas (`ResenaServiceTest`)
+
+| Test | Qué prueba |
+|------|------------|
+| `obtenerTodosDevuelveLista` | Devuelve todas las reseñas con su calificación. |
+| `obtenerPorIdDevuelveResena` | Busca una reseña por id y devuelve el comentario. |
+| `obtenerPorIdNoEncontradaLanzaExcepcion` | Si la reseña no existe, lanza error 404. |
+| `obtenerPromedioProductoDevuelvePromedio` | Calcula el promedio de calificaciones de un producto. |
+| `obtenerPromedioProductoSinResenasDevuelveCero` | Si no hay reseñas, el promedio es 0.0. |
+
+### Auth (`AuthServiceTest`)
+
+| Test | Qué prueba |
+|------|------------|
+| `loginExitosoDevuelveToken` | Con usuario y password correctos, devuelve un token JWT. |
+| `loginUsuarioNoExisteLanzaExcepcion` | Si el username no existe, lanza error de credenciales incorrectas. |
+| `loginPasswordIncorrectoLanzaExcepcion` | Si la contraseña no coincide, lanza error de credenciales incorrectas. |
+| `loginUsuarioDeshabilitadoLanzaExcepcion` | Si el usuario está deshabilitado, lanza error específico. |
+| `loginPasswordCorrectoGeneraTokenConRol` | Verifica que el JwtService genere el token con username y rol. |
+
+### Notificaciones (`NotificacionServiceTest`)
+
+| Test | Qué prueba |
+|------|------------|
+| `obtenerTodasDevuelveLista` | Devuelve todas las notificaciones con destinatario correcto. |
+| `obtenerPorIdDevuelveNotificacion` | Busca una notificación por id y devuelve su estado. |
+| `obtenerPorIdNoEncontradaLanzaExcepcion` | Si la notificación no existe, lanza error 404. |
+| `marcarComoEnviadaCambiaEstado` | Marca la notificación como ENVIADO y registra fecha de envío. |
+| `crearNotificacionQuedaEnEstadoPendiente` | Al crear una notificación, queda en estado PENDIENTE. |
